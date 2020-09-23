@@ -7,6 +7,7 @@ const typeDefs = gql`
   type User {
       username:String!
       email:String!
+      token:String
   }
 
   # The "Query" type is special: it lists all of the available queries that
@@ -14,6 +15,7 @@ const typeDefs = gql`
   # case, the "users" query returns an array of zero or more Books (defined above).
   type Query {
    getUsers:[User]!
+   login(username:String! password:String!):User!
   }
   
   type Mutation{
