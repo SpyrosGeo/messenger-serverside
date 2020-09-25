@@ -10,6 +10,12 @@ const typeDefs = gql`
       createdAt:String!
       token:String
   }
+  type Message {
+    uuid:String!
+    content:String!
+    from:String!
+    to: String!
+  }
 
   # The "Query" type is special: it lists all of the available queries that
   # clients can execute, along with the return type for each. In this
@@ -26,6 +32,7 @@ const typeDefs = gql`
       password:String!
       confirmPassword:String!
       ):User!
+      sendMessage(to:String! content:String!):Message!
   }
 `;
 module.exports = typeDefs;

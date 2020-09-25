@@ -9,21 +9,10 @@ const {JWT_SECRET} = require('../config/env.json')
 
 const resolvers = {
     Query: {
-        getUsers: async (parent,args,context) => {
+        getUsers: async (parent,args,{user}) => {
          
             try {
-                let user
-
-                if (context.req && context.req.headers.authorization) {
-                    const token = context.req.headers.authorization.split("Bearer ")[1]
-                    jwt.verify(token, JWT_SECRET, (err, decodedToken) => {
-                        if (err) {
-                            throw new AuthenticationError('Unauthenticated')
-                        }
-                        user = decodedToken
-                    })
-                }
-
+                if(!user ) throw new AuthenticationError('Unauthenticated')
                 const users = await User.findAll({
                     where:{
                         username:{[Op.ne]:user.username}
@@ -60,7 +49,7 @@ const resolvers = {
                 const correctPassword = await bcrypt.compare(password, user.password)
                 if (!correctPassword) {
                     errors.password = 'Incorrect Password'
-                    throw new AuthenticationError('Incorrect password', { errors })
+                    throw new UserInputError('Incorrect password', { errors })
                 }
                 const token = jwt.sign({
                     username
@@ -122,6 +111,13 @@ const resolvers = {
                 throw new UserInputError("Bad Input", { errors })
             }
 
+        },
+        sendMessage: async(parent,args,context)=>{
+            try {
+                
+            } catch (err) {
+                console.log(err)
+            }
         }
     }
 };
