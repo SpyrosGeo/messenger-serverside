@@ -1,21 +1,21 @@
-const { User } = require("../models")
+const { User  } = require("../../models")
 const bcrypt = require('bcryptjs')
 const { UserInputError, AuthenticationError } = require('apollo-server')
 const jwt = require('jsonwebtoken');
 const { Op } = require("sequelize");
-const {JWT_SECRET} = require('../config/env.json')
+const { JWT_SECRET } = require('../../config/env.json')
 
 
 
 const resolvers = {
     Query: {
-        getUsers: async (parent,args,{user}) => {
-         
+        getUsers: async (parent, args, { user }) => {
+
             try {
-                if(!user ) throw new AuthenticationError('Unauthenticated')
+                if (!user) throw new AuthenticationError('Unauthenticated')
                 const users = await User.findAll({
-                    where:{
-                        username:{[Op.ne]:user.username}
+                    where: {
+                        username: { [Op.ne]: user.username }
                     }
                 })
                 return users
@@ -56,7 +56,7 @@ const resolvers = {
                 }, JWT_SECRET, { expiresIn: 60 * 60 });
                 return {
                     ...user.toJSON(),
-                    createdAt:user.createdAt.toISOString(),
+                    createdAt: user.createdAt.toISOString(),
                     token
                 }
             } catch (err) {
@@ -112,13 +112,7 @@ const resolvers = {
             }
 
         },
-        sendMessage: async(parent,args,context)=>{
-            try {
-                
-            } catch (err) {
-                console.log(err)
-            }
-        }
+    
     }
 };
 

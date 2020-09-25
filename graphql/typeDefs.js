@@ -15,6 +15,7 @@ const typeDefs = gql`
     content:String!
     from:String!
     to: String!
+    createdAt:String!
   }
 
   # The "Query" type is special: it lists all of the available queries that
@@ -23,6 +24,7 @@ const typeDefs = gql`
   type Query {
    getUsers:[User]!
    login(username:String! password:String!):User!
+   getMessages(from:String!):[Message]!
   }
   
   type Mutation{
